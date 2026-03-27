@@ -12,7 +12,7 @@ license = "MIT"
 rust-version = "1.85"
 
 [workspace.dependencies]
-
+bevy = { version = "=0.18.1", default-features = false, features = ["bevy_winit", "bevy_render", "bevy_pbr", "bevy_core_pipeline", "bevy_asset", "bevy_scene", "bevy_text", "bevy_ui", "bevy_state", "tonemapping_luts", "default_font", "zstd_rust", "x11"] }
 
 [workspace.lints.rust]
 unsafe_code = "deny"
@@ -601,7 +601,7 @@ module_name_repetitions = "deny"
 modulo_arithmetic = "deny"
 modulo_one = "deny"
 multi_assignments = "deny"
-multiple_crate_versions = "deny"
+multiple_crate_versions = "allow"
 multiple_inherent_impl = "deny"
 multiple_unsafe_ops_per_block = "deny"
 must_use_candidate = "deny"

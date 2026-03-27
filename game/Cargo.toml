@@ -10,5 +10,8 @@ readme = "README.md"
 keywords = ["server"]
 categories = ["web-programming"]
 
+[dependencies]
+bevy = { workspace = true }
+
 [lints]
 workspace = true
