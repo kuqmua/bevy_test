@@ -1,0 +1,4 @@
+blank_lines_upper_bound = 0
+group_imports = "StdExternalCrate"
+imports_granularity = "Crate"
+format_code_in_doc_comments = true
