@@ -14,7 +14,7 @@ fn spawn_light(mut commands: Commands<'_, '_>) {
         PointLight {
             intensity: 1_000_000.0,
             range: 20.0,
-            shadow_maps_enabled: true,
+            shadows_enabled: true,
             ..default()
         },
         Transform::from_xyz(0.0, 5.0, 0.0),

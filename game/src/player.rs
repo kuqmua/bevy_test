@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_third_person_camera::ThirdPersonCameraTarget;
 pub(crate) struct PlayerPlugin;
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
@@ -9,10 +10,8 @@ impl Plugin for PlayerPlugin {
 }
 #[derive(Component)]
 struct Player;
-
 #[derive(Component)]
 struct Speed(f32);
-
 #[expect(
     clippy::single_call_fn,
     clippy::needless_pass_by_value,
@@ -28,7 +27,7 @@ fn player_movement(
     let Ok(cam) = cam_q.single() else {
         return;
     };
-    for (mut player_transform, player_speed) in player_q.iter_mut() {
+    for (mut player_transform, player_speed) in &mut player_q {
         let mut direction = Vec3::ZERO;
         if keys.pressed(KeyCode::KeyW) {
             direction += *cam.forward();
@@ -49,18 +48,15 @@ fn player_movement(
 }
 #[expect(
     clippy::single_call_fn,
-    reason = "named Bevy systems keep schedule registration explicit"
+    clippy::needless_pass_by_value,
+    reason = "named Bevy systems require value system parameters"
 )]
-fn spawn_player(
-    mut commands: Commands<'_, '_>,
-    mut meshes: ResMut<'_, Assets<Mesh>>,
-    mut materials: ResMut<'_, Assets<StandardMaterial>>,
-) {
+fn spawn_player(mut commands: Commands<'_, '_>, asset_server: Res<'_, AssetServer>) {
     let _player = commands.spawn((
-        Mesh3d(meshes.add(Cuboid::new(1.0, 1.0, 1.0))),
-        MeshMaterial3d(materials.add(Color::srgb(0.8, 0.7, 0.6))),
+        SceneRoot(asset_server.load("Player.gltf#Scene0")),
         Transform::from_xyz(0.0, 0.5, 0.0),
-        Speed(2.0),
         Player,
+        ThirdPersonCameraTarget,
+        Speed(2.5),
     ));
 }
