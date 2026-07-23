@@ -1,9 +1,9 @@
 use bevy::prelude::*;
-mod player;
 mod camera;
+mod player;
 mod world;
-use player::PlayerPlugin;
 use camera::CameraPlugin;
+use player::PlayerPlugin;
 use world::WorldPlugin;
 fn main() -> AppExit {
     App::new()

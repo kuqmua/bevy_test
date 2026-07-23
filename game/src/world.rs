@@ -5,7 +5,6 @@ impl Plugin for WorldPlugin {
         let _player = app.add_systems(Startup, (spawn_light, spawn_floor));
     }
 }
-
 #[expect(
     clippy::single_call_fn,
     reason = "named Bevy systems keep schedule registration explicit"
