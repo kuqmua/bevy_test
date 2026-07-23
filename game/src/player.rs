@@ -38,6 +38,7 @@ fn player_movement(
         if keys.pressed(KeyCode::KeyD) {
             direction += *cam.right();
         }
+        direction.y = 0.0;
         let movement = direction.normalize_or_zero() * 2.0 * time.delta_secs();
         player_transform.translation += movement;
     }
