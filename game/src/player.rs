@@ -9,6 +9,10 @@ impl Plugin for PlayerPlugin {
 }
 #[derive(Component)]
 struct Player;
+
+#[derive(Component)]
+struct Speed(f32);
+
 #[expect(
     clippy::single_call_fn,
     clippy::needless_pass_by_value,
@@ -18,13 +22,13 @@ struct Player;
 fn player_movement(
     keys: Res<'_, ButtonInput<KeyCode>>,
     time: Res<'_, Time>,
-    mut player_q: Query<'_, '_, &mut Transform, With<Player>>,
+    mut player_q: Query<'_, '_, (&mut Transform, &Speed), With<Player>>,
     cam_q: Query<'_, '_, &Transform, (With<Camera3d>, Without<Player>)>,
 ) {
     let Ok(cam) = cam_q.single() else {
         return;
     };
-    for mut player_transform in player_q.iter_mut() {
+    for (mut player_transform, player_speed) in player_q.iter_mut() {
         let mut direction = Vec3::ZERO;
         if keys.pressed(KeyCode::KeyW) {
             direction += *cam.forward();
@@ -39,7 +43,7 @@ fn player_movement(
             direction += *cam.right();
         }
         direction.y = 0.0;
-        let movement = direction.normalize_or_zero() * 2.0 * time.delta_secs();
+        let movement = direction.normalize_or_zero() * player_speed.0 * time.delta_secs();
         player_transform.translation += movement;
     }
 }
@@ -56,6 +60,7 @@ fn spawn_player(
         Mesh3d(meshes.add(Cuboid::new(1.0, 1.0, 1.0))),
         MeshMaterial3d(materials.add(Color::srgb(0.8, 0.7, 0.6))),
         Transform::from_xyz(0.0, 0.5, 0.0),
+        Speed(2.0),
         Player,
     ));
 }
